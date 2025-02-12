@@ -2,7 +2,7 @@
 //  Session.swift
 //  Group10_Nature_walk
 //
-//  Created by David Dang on 2025-02-12.
+//  Created by David Dang on 2025-02-06.
 //
 
 import Foundation
