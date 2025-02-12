@@ -7,18 +7,25 @@
 
 import SwiftUI
 
+// The main content view for the app
 struct ContentView: View {
+    // Environment object to manage the session state
+    @EnvironmentObject var sessionManager: SessionManager
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        // Check if there is a current user session
+        if sessionManager.currentUser == nil {
+            // If no user is logged in, show the LoginView and pass the users data
+            LoginView(users: users)
+        } else {
+            // If there is a logged-in user, show the SessionsListView
+            SessionsListView()
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
-}
+// A predefined list of users with email and password for login purposes
+let users = [
+    User(email: "test@gmail.com", password: "test123"),
+    User(email: "admin@gmail.com", password: "admin123")
+]
