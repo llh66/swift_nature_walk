@@ -2,7 +2,7 @@
 //  Group10_Nature_walkApp.swift
 //  Group10_Nature_walk
 //
-//  Created by LLH on 2025-02-08.
+//  Created by LLH on 2025-02-05.
 //
 
 import SwiftUI
