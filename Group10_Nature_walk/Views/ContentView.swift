@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     // Environment object to manage the session state
     @EnvironmentObject var sessionManager: SessionManager
+    @StateObject var favoriteListViewModel = FavoriteListViewModel()
 
     var body: some View {
         // Check if there is a current user session
@@ -19,7 +20,20 @@ struct ContentView: View {
             LoginView(users: users)
         } else {
             // If there is a logged-in user, show the SessionsListView
-            SessionsListView()
+            TabView {
+                Tab("Sessions", systemImage: "list.bullet") {
+                    SessionsListView()
+                }
+                Tab("Favorites", systemImage: "heart") {
+                    FavoriteListView()
+                }
+            }
+            .onAppear() {
+                self.favoriteListViewModel.load()
+            }
+            
+            .environmentObject(sessionManager)
+            .environmentObject(favoriteListViewModel)
         }
     }
 }

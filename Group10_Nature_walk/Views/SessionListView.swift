@@ -12,7 +12,7 @@ struct SessionsListView: View {
     
     // Environment object to access session management (e.g., for logging out)
     @EnvironmentObject var sessionManager: SessionManager
-    @StateObject var favoriteListViewModel = FavoriteListViewModel()
+    @EnvironmentObject var favoriteListViewModel: FavoriteListViewModel
 
     // Predefined list of sessions with their name, price, and photo URL
     let sessions = Session.defaultSessions
@@ -22,7 +22,7 @@ struct SessionsListView: View {
         NavigationStack {
             // A list to display each session
             List(sessions) { session in
-                SessionListItem(session: session, isFavoriteAccessible: true)
+                SessionListItem(session: session)
                     .environmentObject(sessionManager)
                     .environmentObject(favoriteListViewModel)
             }
@@ -36,12 +36,6 @@ struct SessionsListView: View {
                             sessionManager.logout()
                         } label: {
                             Label("Log out", systemImage: "rectangle.portrait.and.arrow.forward")
-                        }
-                        
-                        NavigationLink(destination: FavoriteListView()
-                            .environmentObject(sessionManager)
-                            .environmentObject(favoriteListViewModel)) {
-                            Label("Favorite List", systemImage: "heart")
                         }
                     } label: {
                         Image(systemName: "line.3.horizontal")
