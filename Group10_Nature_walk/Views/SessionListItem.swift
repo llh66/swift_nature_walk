@@ -10,7 +10,6 @@ import SwiftUI
 struct SessionListItem: View {
     
     let session: Session
-    let isFavoriteAccessible: Bool
     @EnvironmentObject var sessionManager: SessionManager
     @EnvironmentObject var favoriteListViewModel: FavoriteListViewModel
     
@@ -55,7 +54,7 @@ struct SessionListItem: View {
             
             Spacer()
             
-            NavigationLink(destination: SessionDetailsView(session: session, isFavoriteListAccessible: self.isFavoriteAccessible)
+            NavigationLink(destination: SessionDetailsView(session: session)
                 .environmentObject(sessionManager)
                 .environmentObject(favoriteListViewModel)) {
                 //no label

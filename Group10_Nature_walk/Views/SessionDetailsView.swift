@@ -10,12 +10,12 @@ import SwiftUI
 struct SessionDetailsView: View {
     
     @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var favoriteListViewModel: FavoriteListViewModel
     
     @EnvironmentObject var sessionManager: SessionManager
     
     let session: Session
-    let isFavoriteListAccessible: Bool
     
     @State private var currentImage = 0
     @State private var isFavorite: Bool = false
@@ -54,10 +54,18 @@ struct SessionDetailsView: View {
                 .padding(.vertical)
                 
                 Text(session.description)
-                
-                Text("Guide or hosting organization: \(session.host)")
-                    .padding(.vertical)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Contact: \(session.host)")
+                    .padding(.top)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                HStack {
+                    Text("Phone No.:")
+                    Link(session.contact, destination: URL(string: "tel:\(session.contact)")!)
+                }
+                .padding(.bottom)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text("Pricing: \(String(format: "$%.2f", session.pricePerPerson)) per person")
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,7 +73,6 @@ struct SessionDetailsView: View {
             .padding()
             
             .onAppear() {
-                self.favoriteListViewModel.load()
                 if let currentUserEmail = self.sessionManager.currentUser?.email {
                     self.currentUserFavoriteList = self.favoriteListViewModel.favoriteLists[currentUserEmail] ?? []
                     if currentUserFavoriteList.contains(where: { $0.name == session.name }) {
@@ -75,9 +82,9 @@ struct SessionDetailsView: View {
                         self.isFavorite = false
                     }
                 }
-                else {
-                    dismiss()
-                }
+            }
+            .onDisappear() {
+//                dismiss()
             }
             
             .navigationTitle("Session Details")
@@ -90,16 +97,12 @@ struct SessionDetailsView: View {
                         // Add a logout button in the toolbar
                         Button {
                             sessionManager.logout()
-                            dismiss()
                         } label: {
                             Label("Log out", systemImage: "rectangle.portrait.and.arrow.forward")
                         }
                         
-                        if self.isFavoriteListAccessible {
-                            NavigationLink(destination: FavoriteListView().environmentObject(sessionManager)
-                                .environmentObject(favoriteListViewModel)) {
-                                Label("Favorite List", systemImage: "heart")
-                            }
+                        ShareLink(item: "Checkout \(session.name) walking session for \(String(format: "$%.2f", session.pricePerPerson)) per person!") {
+                            Label("Share", systemImage: "square.and.arrow.up")
                         }
                     } label: {
                         Image(systemName: "line.3.horizontal")
@@ -129,5 +132,5 @@ struct SessionDetailsView: View {
 }
 
 #Preview {
-    SessionDetailsView(session: Session(name: "Crothers Woods", description: "Sunnybrook Park is a large public park in Toronto, Ontario, Canada. It is located north of Leaside and south of the Bridle Path areas of the city. The park is home to many bike trails, dog parks, and Sunnybrook Stables.", starRating: 4, host: "Royal Mills", photos:[ "https://images.unsplash.com/photo-1627312594969-03102d0a5705?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q3JvdGhlcnMlMjBXb29kc3xlbnwwfHwwfHx8MA%3D%3D", "https://live.staticflickr.com/2842/9967895145_d78ee1f788_b.jpg"], pricePerPerson: 25.0), isFavoriteListAccessible: true)
+    SessionDetailsView(session: Session(name: "Crothers Woods", description: "Sunnybrook Park is a large public park in Toronto, Ontario, Canada. It is located north of Leaside and south of the Bridle Path areas of the city. The park is home to many bike trails, dog parks, and Sunnybrook Stables.", starRating: 4, host: "Royal Mills", contact: "4702743182", photos:[ "https://images.unsplash.com/photo-1627312594969-03102d0a5705?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q3JvdGhlcnMlMjBXb29kc3xlbnwwfHwwfHx8MA%3D%3D", "https://live.staticflickr.com/2842/9967895145_d78ee1f788_b.jpg"], pricePerPerson: 25.0))
 }
