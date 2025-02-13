@@ -25,7 +25,8 @@ struct LoginView: View {
     var body: some View {
         VStack(spacing: 20) {
             // Title of the login screen
-            Text("Login").font(.largeTitle).bold()
+            Text("Login")
+            .font(.largeTitle).bold()
 
             // Email text field for user input
             TextField("Email", text: $email)
