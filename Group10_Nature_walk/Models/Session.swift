@@ -17,7 +17,7 @@ class Session: Identifiable, Codable {
     let photos: [String]
     let pricePerPerson: Double
     
-// Initializer to set up a session with a name, price, and photo
+// Initializer to set up a session 
     init(name: String, description: String, starRating: Int, host: String, photos: [String], pricePerPerson: Double) {
         self.name = name
         self.description = description
