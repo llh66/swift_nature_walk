@@ -21,6 +21,10 @@ class SessionManager: ObservableObject {
         self.currentUser = user  // Set the current user as the logged-in user
         self.rememberMe = rememberMe  // Save the "Remember Me" setting
         
+        if let encodedUser = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(encodedUser, forKey: "currentUser")
+        }
+        
         // Save the "Remember Me" preference to UserDefaults
         UserDefaults.standard.set(rememberMe, forKey: "rememberMe")
         
@@ -32,6 +36,7 @@ class SessionManager: ObservableObject {
             // If "Remember Me" is not selected, remove the saved credentials from UserDefaults
             UserDefaults.standard.removeObject(forKey: "savedEmail")
             UserDefaults.standard.removeObject(forKey: "savedPassword")
+            UserDefaults.standard.removeObject(forKey: "currentUser")
         }
     }
 

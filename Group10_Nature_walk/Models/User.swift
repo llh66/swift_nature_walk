@@ -9,7 +9,7 @@ import Foundation
 
 // User class to represent a user with an email and password
 class User: Codable, Identifiable {
-    let id = UUID()
+    var id = UUID()
     let email: String
     let password: String
 
